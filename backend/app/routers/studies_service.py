@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 
 from app.db.session import SessionLocal
-from app.models.study import Study
+from app.models.study import Study, StudyStatus
 from app.schemas.study import StudyCreate, StudyOut
 
 router = APIRouter(prefix="/studies", tags=["studies"])
@@ -69,6 +69,30 @@ def get_study(study_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Study not found",
         )
+    return StudyOut(
+        id=study.id,
+        name=study.name,
+        protocolCode=study.protocol_code,
+        status=study.status,
+    )
+
+
+# PUT: Belirli bir study'nin status'unu Active yapar.
+#*********************************************************************************************************************
+@router.put("/{study_id}/activate", response_model=StudyOut)
+def activate_study(study_id: int, db: Session = Depends(get_db)):
+    study = db.get(Study, study_id)
+    if not study:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Study not found",
+        )
+
+    study.status = StudyStatus.Active
+    db.add(study)
+    db.commit()
+    db.refresh(study)
+
     return StudyOut(
         id=study.id,
         name=study.name,

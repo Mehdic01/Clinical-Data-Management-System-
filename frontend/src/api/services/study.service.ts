@@ -26,4 +26,9 @@ export const studyService = {
   delete: async (id: string): Promise<void> => {
     await api.delete(ENDPOINTS.STUDY(id));
   },
+
+  activate: async (id: string): Promise<Study> => {
+    const res = await api.put(ENDPOINTS.ACTIVATE_STUDY(id));
+    return res.data;
+  },
 };

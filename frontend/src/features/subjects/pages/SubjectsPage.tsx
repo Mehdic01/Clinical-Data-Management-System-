@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ErrorMessage } from "@/components/shared/ErrorMessage";
 import { useSubjects, useCreateSubject, useDeleteSubject } from "../hooks/useSubjects";
+import { useStudy, useActivateStudy } from "@/features/studies/hooks/useStudies";
 import { toApiError } from "@/api/axios";
 import type { Subject, CreateSubjectInput } from "@/types/subject.types";
 
@@ -69,6 +70,7 @@ export function SubjectsPage() {
   const { studyId } = useParams<{ studyId: string }>();
   const navigate = useNavigate();
   const { data: subjects, isLoading, isError, error, refetch } = useSubjects(studyId!);
+  const { data: study } = useStudy(studyId!);
 
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -80,6 +82,13 @@ export function SubjectsPage() {
 
   const createMutation = useCreateSubject(studyId!);
   const deleteMutation = useDeleteSubject(studyId!);
+  const activateMutation = useActivateStudy();
+
+  const isStudyActive = study?.status === "Active";
+
+  const handleActivateStudy = async () => {
+    await activateMutation.mutateAsync(studyId!);
+  };
 
   const handleCreate = async () => {
     await createMutation.mutateAsync(formData);
@@ -115,8 +124,35 @@ export function SubjectsPage() {
 
   return (
     <div>
+      {/* Study Activation Warning */}
+      {!isStudyActive && (
+        <div className="mb-6 flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">⚠️</span>
+            <div>
+              <h4 className="font-medium text-amber-800">Study Not Active</h4>
+              <p className="text-sm text-amber-700">
+                You must activate the study before adding subjects.
+              </p>
+            </div>
+          </div>
+          <Button
+            onClick={handleActivateStudy}
+            disabled={activateMutation.isPending}
+          >
+            {activateMutation.isPending ? "Activating..." : "Activate Study"}
+          </Button>
+        </div>
+      )}
+
       <div className="mb-6 flex justify-end">
-        <Button onClick={() => setShowCreateDialog(true)}>Add Subject</Button>
+        <Button
+          onClick={() => setShowCreateDialog(true)}
+          disabled={!isStudyActive}
+          title={!isStudyActive ? "Activate study first" : undefined}
+        >
+          Add Subject
+        </Button>
       </div>
 
       {isLoading ? (

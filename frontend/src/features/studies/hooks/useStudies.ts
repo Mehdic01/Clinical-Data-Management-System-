@@ -52,3 +52,15 @@ export function useDeleteStudy() {
     },
   });
 }
+
+export function useActivateStudy() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => studyService.activate(id),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.studies });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.study(id) });
+    },
+  });
+}

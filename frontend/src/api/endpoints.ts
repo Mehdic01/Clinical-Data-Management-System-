@@ -5,6 +5,7 @@ export const ENDPOINTS = {
   // Studies
   STUDIES: "/studies",
   STUDY: (id: string) => `/studies/${id}`,
+  ACTIVATE_STUDY: (id: string) => `/studies/${id}/activate`,
 
   // Visit Templates
   VISIT_TEMPLATES: (studyId: string) => `/studies/${studyId}/visit-templates`,

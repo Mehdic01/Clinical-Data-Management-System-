@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.db.session import SessionLocal
-from app.models.study import Study
+from app.models.study import Study, StudyStatus
 from app.models.subject import Subject
 from app.models.scheduled_visit import ScheduledVisit
 from app.schemas.subject import SubjectCreate, SubjectOut, SubjectDetailOut
@@ -82,9 +82,16 @@ def get_subject_detail(subject_id: int, db: Session = Depends(get_db)):
 #*********************************************************************************************************************
 @router.post("/studies/{study_id}/subjects", response_model=SubjectOut, status_code=status.HTTP_201_CREATED)
 def create_subject(study_id: int, payload: SubjectCreate, db: Session = Depends(get_db)):
-	if not db.get(Study, study_id):
+	study = db.get(Study, study_id)
+	if not study:
 		raise HTTPException(status_code=404, detail="Study not found")
-
+	if study.status != StudyStatus.Active:
+		raise HTTPException(
+			status_code=400,
+			detail="Cannot add subjects to a Draft study. Please activate the study first.",
+		)
+	
+    
 	subject = Subject(
 		study_id=study_id,
 		subject_identifier=payload.subjectIdentifier,
