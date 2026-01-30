@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import Date, ForeignKey, String, UniqueConstraint
+from sqlalchemy import Boolean, Date, ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -23,3 +23,4 @@ class Subject(Base):
 
 	subject_identifier: Mapped[str] = mapped_column(String(64), nullable=False)
 	enrollment_date: Mapped[date] = mapped_column(Date, nullable=False)
+	schedule_generated: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)

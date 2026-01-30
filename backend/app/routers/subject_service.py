@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
 from app.models.study import Study
 from app.models.subject import Subject
+from app.models.scheduled_visit import ScheduledVisit
 from app.schemas.subject import SubjectCreate, SubjectOut, SubjectDetailOut
 
 router = APIRouter(tags=["subjects"])
@@ -38,6 +39,7 @@ def list_subjects(study_id: int, db: Session = Depends(get_db)):
 			studyId=s.study_id,
 			subjectIdentifier=s.subject_identifier,
 			enrollmentDate=s.enrollment_date,
+			scheduleGenerated=s.schedule_generated,
 		)
 		for s in rows
 	]
@@ -56,7 +58,23 @@ def get_subject_detail(subject_id: int, db: Session = Depends(get_db)):
 		studyId=subject.study_id,
 		subjectIdentifier=subject.subject_identifier,
 		enrollmentDate=subject.enrollment_date,
-		scheduledVisits=[],
+		scheduleGenerated=subject.schedule_generated,
+		scheduledVisits=[
+			{
+				"id": sv.id,
+				"subjectId": sv.subject_id,
+				"visitTemplateId": sv.visit_template_id,
+				"scheduledDate": sv.scheduled_date,
+				"windowStart": sv.window_start,
+				"windowEnd": sv.window_end,
+				"status": sv.status.value,
+			}
+			for sv in db.execute(
+				select(ScheduledVisit)
+				.where(ScheduledVisit.subject_id == subject_id)
+				.order_by(ScheduledVisit.scheduled_date.asc(), ScheduledVisit.id.asc())
+			).scalars().all()
+		],
 	)
 
 
@@ -88,6 +106,7 @@ def create_subject(study_id: int, payload: SubjectCreate, db: Session = Depends(
 		studyId=subject.study_id,
 		subjectIdentifier=subject.subject_identifier,
 		enrollmentDate=subject.enrollment_date,
+		scheduleGenerated=subject.schedule_generated,
 	)
 
 

@@ -1,6 +1,7 @@
 from datetime import date
 
 from pydantic import BaseModel, Field
+from typing import Literal
 
 
 class SubjectCreate(BaseModel):
@@ -13,6 +14,7 @@ class SubjectOut(BaseModel):
     studyId: int
     subjectIdentifier: str
     enrollmentDate: date
+    scheduleGenerated: bool
 
 
 class ScheduledVisitOut(BaseModel):
@@ -20,9 +22,9 @@ class ScheduledVisitOut(BaseModel):
     subjectId: int
     visitTemplateId: int
     scheduledDate: date
-    actualDate: date | None = None
-    status: str
-    notes: str | None = None
+    windowStart: date
+    windowEnd: date
+    status: Literal["Pending", "Done"]
 
 
 class SubjectDetailOut(BaseModel):
@@ -30,4 +32,5 @@ class SubjectDetailOut(BaseModel):
     studyId: int
     subjectIdentifier: str
     enrollmentDate: date
+    scheduleGenerated: bool
     scheduledVisits: list[ScheduledVisitOut]

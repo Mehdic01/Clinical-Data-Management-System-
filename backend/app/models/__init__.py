@@ -5,4 +5,5 @@ from app.models.form_template import FormTemplate  # noqa: F401
 from app.models.form_field import FormField 
 from app.models.visit_template_form import VisitTemplateForm   # noqa: F401
 from app.models.subject import Subject  # noqa: F401
+from app.models.scheduled_visit import ScheduledVisit  # noqa: F401
 from app.models.subject import Subject  # noqa: F401
