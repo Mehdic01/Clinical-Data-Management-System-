@@ -47,11 +47,20 @@ export function StudiesPage() {
 
   return (
     <PageContainer
-      title="Studies"
-      actions={
-        <Button onClick={() => setShowCreateDialog(true)}>New Study</Button>
-      }
+      title=""
+      actions={null}
     >
+      {/* Custom Header */}
+      <div className="mb-8 flex flex-col items-center gap-4">
+        <h1 className="text-4xl font-bold text-slate-800">Studies</h1>
+        <Button 
+          onClick={() => setShowCreateDialog(true)}
+          className="px-6 py-3 text-lg"
+        >
+          New Study
+        </Button>
+      </div>
+
       <StudyList studies={studies ?? []} loading={isLoading} />
 
       <Dialog open={showCreateDialog} onClose={() => setShowCreateDialog(false)}>
