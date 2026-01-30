@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 
 // Feature pages
+import { DashboardPage } from "@/features/dashboard/pages/DashboardPage";
 import { StudiesPage } from "@/features/studies/pages/StudiesPage";
 import { StudyDetailPage } from "@/features/studies/pages/StudyDetailPage";
 import { VisitTemplatesPage } from "@/features/visit-templates/pages/VisitTemplatesPage";
@@ -10,23 +11,13 @@ import { FormBuilderPage } from "@/features/form-templates/pages/FormBuilderPage
 import { SubjectsPage } from "@/features/subjects/pages/SubjectsPage";
 import { SubjectDetailPage } from "@/features/subjects/pages/SubjectDetailPage";
 
-// Dashboard placeholder
-function Dashboard() {
-  return (
-    <div>
-      <h1 className="text-2xl font-semibold">Dashboard</h1>
-      <p className="mt-2 text-zinc-500">Welcome to the Clinical Data Management System</p>
-    </div>
-  );
-}
-
 // Bu router sınıfı sayesinde uygulamanın farklı sayfalarına yönlendirme yapılabilir. ve her sayfa için hangi bileşenin render edileceği belirlenir.
 //************************************************************************************************************************************************* */
 export const router = createBrowserRouter([
   {
     element: <MainLayout />,
     children: [
-      { path: "/", element: <Dashboard /> },
+      { path: "/", element: <DashboardPage /> },
       
       // Studies
       { path: "/studies", element: <StudiesPage /> },

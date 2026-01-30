@@ -2,6 +2,9 @@
 // Centralized endpoint definitions for easy maintenance
 
 export const ENDPOINTS = {
+  // Dashboard
+  DASHBOARD_SUMMARY: "/dashboard/summary",
+
   // Studies
   STUDIES: "/studies",
   STUDY: (id: string) => `/studies/${id}`,
