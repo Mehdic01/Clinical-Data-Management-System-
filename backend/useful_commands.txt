@@ -1,0 +1,15 @@
+#Run alembic upgrade head whenever you want the database to match the latest migrations (e.g., after creating a new migration or when setting up a fresh DB).
+
+
+alembic revision --autogenerate -m "create studies" --> studies tablosunu oluşturur
+alembic upgrade head 
+
+Typical flow:
+
+Create/modify SQLAlchemy models.
+Generate migration: alembic revision --autogenerate -m "message"
+Apply migration: alembic upgrade head
+Check current DB version: alembic current
+See migration history: alembic history
+Downgrade (if needed): alembic downgrade -1
+

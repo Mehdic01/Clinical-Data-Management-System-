@@ -1,0 +1,12 @@
+import { create } from "zustand";
+
+type AppState = {
+  // Add app-wide state here
+  initialized: boolean;
+  setInitialized: (initialized: boolean) => void;
+};
+
+export const useAppStore = create<AppState>((set) => ({
+  initialized: false,
+  setInitialized: (initialized) => set({ initialized }),
+}));
