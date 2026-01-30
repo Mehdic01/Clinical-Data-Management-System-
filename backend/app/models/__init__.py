@@ -6,4 +6,6 @@ from app.models.form_field import FormField
 from app.models.visit_template_form import VisitTemplateForm   # noqa: F401
 from app.models.subject import Subject  # noqa: F401
 from app.models.scheduled_visit import ScheduledVisit  # noqa: F401
+from app.models.form_entry import FormEntry  # noqa: F401
+from app.models.field_value import FieldValue  # noqa: F401
 from app.models.subject import Subject  # noqa: F401

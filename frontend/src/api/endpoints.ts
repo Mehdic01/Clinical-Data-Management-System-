@@ -24,6 +24,7 @@ export const ENDPOINTS = {
   // Scheduled Visits
   SCHEDULED_VISITS: (subjectId: string) => `/subjects/${subjectId}/scheduled-visits`,
   SCHEDULED_VISIT: (id: string) => `/scheduled-visits/${id}`,
+  SCHEDULED_VISIT_FORMS: (scheduledVisitId: string) => `/scheduled-visits/${scheduledVisitId}/forms`,
 
   // Form Entries
   FORM_ENTRIES: (scheduledVisitId: string) => `/scheduled-visits/${scheduledVisitId}/form-entries`,
