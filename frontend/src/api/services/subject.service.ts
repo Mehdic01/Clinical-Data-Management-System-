@@ -1,6 +1,6 @@
 import { api } from "@/api/axios";
 import { ENDPOINTS } from "@/api/endpoints";
-import type { Subject, CreateSubjectInput, UpdateSubjectInput } from "@/types/subject.types";
+import type { Subject, SubjectDetail, CreateSubjectInput, SubjectScheduledVisit } from "@/types/subject.types";
 
 export const subjectService = {
   list: async (studyId: string): Promise<Subject[]> => {
@@ -8,8 +8,8 @@ export const subjectService = {
     return res.data;
   },
 
-  getById: async (studyId: string, id: string): Promise<Subject> => {
-    const res = await api.get(ENDPOINTS.SUBJECT(studyId, id));
+  getById: async (id: string): Promise<SubjectDetail> => {
+    const res = await api.get(ENDPOINTS.SUBJECT(id));
     return res.data;
   },
 
@@ -18,12 +18,12 @@ export const subjectService = {
     return res.data;
   },
 
-  update: async (studyId: string, id: string, input: UpdateSubjectInput): Promise<Subject> => {
-    const res = await api.put(ENDPOINTS.SUBJECT(studyId, id), input);
-    return res.data;
+  delete: async (id: string): Promise<void> => {
+    await api.delete(ENDPOINTS.SUBJECT(id));
   },
 
-  delete: async (studyId: string, id: string): Promise<void> => {
-    await api.delete(ENDPOINTS.SUBJECT(studyId, id));
+  generateSchedule: async (subjectId: string): Promise<SubjectScheduledVisit[]> => {
+    const res = await api.post(ENDPOINTS.GENERATE_SCHEDULE(subjectId));
+    return res.data;
   },
 };

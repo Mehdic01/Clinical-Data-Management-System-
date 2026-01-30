@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router-dom";
+// NOTE: This component is deprecated. Subject cards are now rendered directly in SubjectsPage.
+// Keeping this file for reference or future use if list view is needed.
+
 import type { Subject } from "@/types/subject.types";
 import { DataTable } from "@/components/shared/DataTable";
-import { StatusBadge } from "@/components/shared/StatusBadge";
 import { formatDate } from "@/lib/utils";
 
 type SubjectListProps = {
@@ -10,30 +11,27 @@ type SubjectListProps = {
   loading?: boolean;
 };
 
-export function SubjectList({ subjects, studyId, loading }: SubjectListProps) {
-  const navigate = useNavigate();
-
+export function SubjectList({ subjects, loading }: SubjectListProps) {
   const columns = [
-    { key: "subjectNumber", header: "Subject #" },
-    { key: "initials", header: "Initials" },
+    { key: "subjectIdentifier", header: "Subject Identifier" },
     {
       key: "enrollmentDate",
       header: "Enrollment Date",
       render: (subject: Subject) => formatDate(subject.enrollmentDate),
     },
     {
-      key: "status",
-      header: "Status",
+      key: "scheduleGenerated",
+      header: "Schedule Status",
       render: (subject: Subject) => (
-        <StatusBadge
-          status={subject.status}
-          statusMap={{
-            Enrolled: { label: "Enrolled", variant: "info" },
-            Active: { label: "Active", variant: "success" },
-            Completed: { label: "Completed", variant: "default" },
-            Withdrawn: { label: "Withdrawn", variant: "danger" },
-          }}
-        />
+        <span
+          className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
+            subject.scheduleGenerated
+              ? "bg-green-100 text-green-700"
+              : "bg-yellow-100 text-yellow-700"
+          }`}
+        >
+          {subject.scheduleGenerated ? "Generated" : "Pending"}
+        </span>
       ),
     },
   ];
@@ -42,11 +40,10 @@ export function SubjectList({ subjects, studyId, loading }: SubjectListProps) {
     <DataTable
       data={subjects}
       columns={columns}
-      keyExtractor={(subject) => subject.id}
+      keyExtractor={(subject) => String(subject.id)}
       loading={loading}
       emptyTitle="No subjects enrolled"
       emptyDescription="Enroll your first subject"
-      onRowClick={(subject) => navigate(`/studies/${studyId}/subjects/${subject.id}`)}
     />
   );
 }

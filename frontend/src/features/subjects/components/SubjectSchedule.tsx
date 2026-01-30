@@ -1,15 +1,15 @@
-import type { ScheduledVisit } from "@/types/scheduled-visit.types";
+import type { SubjectScheduledVisit } from "@/types/subject.types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 
 type SubjectScheduleProps = {
-  scheduledVisits: ScheduledVisit[];
-  onVisitClick?: (visit: ScheduledVisit) => void;
+  scheduledVisits: SubjectScheduledVisit[];
+  onVisitClick?: (visit: SubjectScheduledVisit) => void;
 };
 
 const statusVariants: Record<string, "default" | "success" | "warning" | "danger"> = {
-  Scheduled: "info" as "default",
+  Scheduled: "default",
   Completed: "success",
   Missed: "danger",
   Cancelled: "default",
@@ -43,9 +43,7 @@ export function SubjectSchedule({ scheduledVisits, onVisitClick }: SubjectSchedu
           <CardContent>
             <div className="text-sm text-zinc-500">
               <span>Scheduled: {formatDate(visit.scheduledDate)}</span>
-              {visit.actualDate && (
-                <span className="ml-4">Actual: {formatDate(visit.actualDate)}</span>
-              )}
+              <span className="ml-4">Window: {formatDate(visit.windowStart)} - {formatDate(visit.windowEnd)}</span>
             </div>
           </CardContent>
         </Card>

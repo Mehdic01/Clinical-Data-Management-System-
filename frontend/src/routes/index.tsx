@@ -7,6 +7,8 @@ import { StudyDetailPage } from "@/features/studies/pages/StudyDetailPage";
 import { VisitTemplatesPage } from "@/features/visit-templates/pages/VisitTemplatesPage";
 import { FormTemplatesPage } from "@/features/form-templates/pages/FormTemplatesPage";
 import { FormBuilderPage } from "@/features/form-templates/pages/FormBuilderPage";
+import { SubjectsPage } from "@/features/subjects/pages/SubjectsPage";
+import { SubjectDetailPage } from "@/features/subjects/pages/SubjectDetailPage";
 
 // Dashboard placeholder
 function Dashboard() {
@@ -32,10 +34,11 @@ export const router = createBrowserRouter([
         path: "/studies/:studyId", 
         element: <StudyDetailPage />,
         children: [
+          { path: "subjects", element: <SubjectsPage /> },
+          { path: "subjects/:subjectId", element: <SubjectDetailPage /> },
           { path: "visit-templates", element: <VisitTemplatesPage /> },
           { path: "form-templates", element: <FormTemplatesPage /> },
           { path: "form-templates/:formTemplateId/edit", element: <FormBuilderPage /> },
-          // { path: "subjects", element: <SubjectsPage /> },
         ],
       },
 

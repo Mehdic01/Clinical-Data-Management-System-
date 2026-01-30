@@ -18,7 +18,8 @@ export const ENDPOINTS = {
 
   // Subjects
   SUBJECTS: (studyId: string) => `/studies/${studyId}/subjects`,
-  SUBJECT: (studyId: string, id: string) => `/studies/${studyId}/subjects/${id}`,
+  SUBJECT: (id: string) => `/subjects/${id}`,
+  GENERATE_SCHEDULE: (subjectId: string) => `/subjects/${subjectId}/scheduled-visits`,
 
   // Scheduled Visits
   SCHEDULED_VISITS: (subjectId: string) => `/subjects/${subjectId}/scheduled-visits`,

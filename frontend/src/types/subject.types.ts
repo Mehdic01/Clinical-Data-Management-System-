@@ -1,23 +1,28 @@
 // Subject Types
 
-export type SubjectStatus = "Enrolled" | "Active" | "Completed" | "Withdrawn";
-
 export type Subject = {
-  id: string;
-  studyId: string;
-  subjectNumber: string;
-  initials?: string;
+  id: number;
+  studyId: number;
+  subjectIdentifier: string;
   enrollmentDate: string;
-  status: SubjectStatus;
-  createdAt?: string;
-  updatedAt?: string;
+  scheduleGenerated: boolean;
+};
+
+export type SubjectScheduledVisit = {
+  id: number;
+  subjectId: number;
+  visitTemplateId: number;
+  scheduledDate: string;
+  windowStart: string;
+  windowEnd: string;
+  status: "Pending" | "Done";
+};
+
+export type SubjectDetail = Subject & {
+  scheduledVisits: SubjectScheduledVisit[];
 };
 
 export type CreateSubjectInput = {
-  subjectNumber: string;
-  initials?: string;
+  subjectIdentifier: string;
   enrollmentDate: string;
-  status?: SubjectStatus;
 };
-
-export type UpdateSubjectInput = Partial<CreateSubjectInput>;

@@ -1,10 +1,8 @@
 from datetime import timedelta
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-
 from app.db.session import SessionLocal
 from app.models.subject import Subject
 from app.models.scheduled_visit import ScheduledVisit, ScheduledVisitStatus
