@@ -30,8 +30,8 @@ def get_db():
         db.close()
 
 
-# GET: Scheduled visit için bağlı formları ve doldurulma durumlarını getirir
-#*********************************************************************************************************************
+# GET: Retrieve forms and their completion status for a scheduled visit.
+#**********************************************************
 @router.get(
     "/scheduled-visits/{scheduled_visit_id}/forms",
     response_model=list[ScheduledVisitFormOut],
@@ -91,8 +91,8 @@ def get_scheduled_visit_forms(scheduled_visit_id: int, db: Session = Depends(get
     return result
 
 
-# GET: Tek bir form entry detayını getirir (read-only görüntüleme için)
-#*********************************************************************************************************************
+# GET: Retrieve details of a single form entry (read-only).
+#**********************************************************
 @router.get(
     "/form-entries/{form_entry_id}",
     response_model=FormEntryDetailOut,
@@ -122,8 +122,8 @@ def get_form_entry_detail(form_entry_id: int, db: Session = Depends(get_db)):
     )
 
 
-# POST: Yeni form entry oluşturur (form doldurma)
-#*********************************************************************************************************************
+# POST: Create a new form entry (form submission).
+#**********************************************************
 @router.post(
     "/scheduled-visits/{scheduled_visit_id}/form-entries",
     response_model=FormEntryDetailOut,

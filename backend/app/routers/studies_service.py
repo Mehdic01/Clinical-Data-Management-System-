@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-
 from app.db.session import SessionLocal
 from app.models.study import Study, StudyStatus
 from app.schemas.study import StudyCreate, StudyOut
@@ -17,11 +16,8 @@ def get_db():
     finally:
         db.close()
 
-# post endpoint, yeni bir çalışma oluşturmak için kullanılır. ve input validation pydantic şemaları ile sağlanır.
-# get endpoint, veritabanındaki tüm çalışmaları listelemek için kullanılır. 
-# protocolCode unique değilse 409 hatası döner.        
-
-
+# POST: Create a new study with input validation using Pydantic schemas.
+#**********************************************************
 @router.post("", response_model=StudyOut, status_code=status.HTTP_201_CREATED)
 def create_study(payload: StudyCreate, db: Session = Depends(get_db)):
     study = Study(
@@ -47,7 +43,8 @@ def create_study(payload: StudyCreate, db: Session = Depends(get_db)):
         status=study.status,
     )
 
-
+# GET: List all studies in the database.
+#**********************************************************
 @router.get("", response_model=list[StudyOut])
 def list_studies(db: Session = Depends(get_db)):
     rows = db.execute(select(Study).order_by(Study.id.desc())).scalars().all()
@@ -61,6 +58,8 @@ def list_studies(db: Session = Depends(get_db)):
         for s in rows
     ]
 
+# GET: Get a specific study by ID.
+#**********************************************************
 @router.get("/{study_id}", response_model=StudyOut)
 def get_study(study_id: int, db: Session = Depends(get_db)):
     study = db.get(Study, study_id)
@@ -76,9 +75,8 @@ def get_study(study_id: int, db: Session = Depends(get_db)):
         status=study.status,
     )
 
-
-# PUT: Belirli bir study'nin status'unu Active yapar.
-#*********************************************************************************************************************
+# PUT: Activate a specific study.
+#**********************************************************
 @router.put("/{study_id}/activate", response_model=StudyOut)
 def activate_study(study_id: int, db: Session = Depends(get_db)):
     study = db.get(Study, study_id)

@@ -4,6 +4,9 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.db.base import Base
 import enum
 
+# Study modelini ve durumlarını tanımlar.
+# Her çalışmanın benzersiz bir protokol kodu ve durumu (taslak veya aktif) vardır.
+#****************************************************************************************
 
 class StudyStatus(str, enum.Enum):
     Draft = "Draft"

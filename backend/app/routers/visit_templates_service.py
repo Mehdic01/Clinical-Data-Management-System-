@@ -21,6 +21,8 @@ def get_db():
 
 # bu endpointler, belirli bir çalışmaya (study) ait ziyaret şablonlarını (visit templates) oluşturmak ve listelemek için kullanılır.
 
+# POST: Create a new visit template for a specific study.
+#**********************************************************
 @router.post("", response_model=VisitTemplateOut, status_code=status.HTTP_201_CREATED)
 def create_visit_template(study_id: int, payload: VisitTemplateCreate, db: Session = Depends(get_db)):
     # Study var mı?
@@ -57,6 +59,8 @@ def create_visit_template(study_id: int, payload: VisitTemplateCreate, db: Sessi
     )
 
 
+# GET: List all visit templates for a specific study.
+#**********************************************************
 @router.get("", response_model=list[VisitTemplateOut])
 def list_visit_templates(study_id: int, db: Session = Depends(get_db)):
     # Study var mı?
@@ -84,6 +88,8 @@ def list_visit_templates(study_id: int, db: Session = Depends(get_db)):
     ]
 
 
+# PUT: Update an existing visit template for a specific study.
+#**********************************************************
 @router.put("/{visit_template_id}", response_model=VisitTemplateOut)
 def update_visit_template(
     study_id: int,
@@ -124,6 +130,8 @@ def update_visit_template(
     )
 
 
+# DELETE: Delete an existing visit template for a specific study.
+#**********************************************************
 @router.delete("/{visit_template_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_visit_template(study_id: int, visit_template_id: int, db: Session = Depends(get_db)):
     # Study var mı?

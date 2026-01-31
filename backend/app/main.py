@@ -22,6 +22,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include routers for different services
 app.include_router(health_router)
 app.include_router(studies_router)
 app.include_router(visit_templates_router)  

@@ -20,8 +20,8 @@ def get_db():
 		db.close()
 
 
-# GET: Belirli bir study'e ait tüm subject'leri listeler.
-#*********************************************************************************************************************
+# GET: List all subjects for a specific study.
+#**********************************************************
 @router.get("/studies/{study_id}/subjects", response_model=list[SubjectOut])
 def list_subjects(study_id: int, db: Session = Depends(get_db)):
 	if not db.get(Study, study_id):
@@ -45,8 +45,8 @@ def list_subjects(study_id: int, db: Session = Depends(get_db)):
 	]
 
 
-# GET: Tek bir subject detayını (scheduledVisits dahil) getirir.
-#*********************************************************************************************************************
+# GET: Get detailed information about a specific subject (including scheduled visits).
+#**********************************************************
 @router.get("/subjects/{subject_id}", response_model=SubjectDetailOut)
 def get_subject_detail(subject_id: int, db: Session = Depends(get_db)):
 	subject = db.get(Subject, subject_id)
@@ -78,8 +78,8 @@ def get_subject_detail(subject_id: int, db: Session = Depends(get_db)):
 	)
 
 
-# POST: Belirli bir study'e yeni subject ekler.
-#*********************************************************************************************************************
+# POST: Add a new subject to a specific study.
+#**********************************************************
 @router.post("/studies/{study_id}/subjects", response_model=SubjectOut, status_code=status.HTTP_201_CREATED)
 def create_subject(study_id: int, payload: SubjectCreate, db: Session = Depends(get_db)):
 	study = db.get(Study, study_id)
@@ -117,8 +117,8 @@ def create_subject(study_id: int, payload: SubjectCreate, db: Session = Depends(
 	)
 
 
-# DELETE: Tek bir subject kaydını siler.
-#*********************************************************************************************************************
+# DELETE: Delete a specific subject.
+#**********************************************************
 @router.delete("/subjects/{subject_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_subject(subject_id: int, db: Session = Depends(get_db)):
 	subject = db.get(Subject, subject_id)

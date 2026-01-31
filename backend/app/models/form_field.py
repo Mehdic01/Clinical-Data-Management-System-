@@ -7,6 +7,8 @@ from app.db.base import Base
 
 # bu sınıf FormTemplate'a ait form alanlarını (form fields) temsil eder.
 # her form alanının benzersiz bir anahtarı (key) ve türü (type) vardır.
+# form içinde eklenen her field için sıralama (order) bilgisi tutulur. ve gereklilik (required) durumu belirtilir. ve type olarak Text, Number, Date gibi türler bulunur.
+#****************************************************************************************
 
 class FieldType(str, enum.Enum):
     Text = "Text"

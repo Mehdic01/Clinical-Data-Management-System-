@@ -26,9 +26,8 @@ def get_db():
     finally:
         db.close()
 
-# bu post endpoint, belirli bir çalışmaya (study) yeni bir form şablonu (form template) oluşturmak için kullanılır.
-# ve form şablonuna ait alanları (form fields) da aynı anda oluşturabilir.
-
+# POST: Create a new form template for a specific study, including its fields.
+#**********************************************************
 @router.post("", response_model=FormTemplateDetailOut, status_code=status.HTTP_201_CREATED)
 def create_form_template(study_id: int, payload: FormTemplateCreate, db: Session = Depends(get_db)):
     if not db.get(Study, study_id):
@@ -88,8 +87,9 @@ def create_form_template(study_id: int, payload: FormTemplateCreate, db: Session
             for f in created_fields
         ],
     )
-#**********************************************************************************************************************
 
+# GET: List all form templates for a specific study.
+#**********************************************************
 @router.get("", response_model=list[FormTemplateOut])
 def list_form_templates(study_id: int, db: Session = Depends(get_db)):
     if not db.get(Study, study_id):
@@ -104,6 +104,8 @@ def list_form_templates(study_id: int, db: Session = Depends(get_db)):
     return [FormTemplateOut.model_validate(ft) for ft in rows]
 
 
+# GET: Retrieve the field count for a specific form template.
+#**********************************************************
 @router.get("/{form_template_id}/field-count", response_model=dict)
 def get_form_field_count(study_id: int, form_template_id: int, db: Session = Depends(get_db)):
     ft = db.get(FormTemplate, form_template_id)
@@ -114,6 +116,8 @@ def get_form_field_count(study_id: int, form_template_id: int, db: Session = Dep
     return {"count": count}
 
 
+# GET: Retrieve a specific form template.
+#**********************************************************
 @router.get("/{form_template_id}", response_model=FormTemplateDetailOut)
 def get_form_template_detail(study_id: int, form_template_id: int, db: Session = Depends(get_db)):
     ft = db.get(FormTemplate, form_template_id)
@@ -146,6 +150,8 @@ def get_form_template_detail(study_id: int, form_template_id: int, db: Session =
     )
 
 
+# DELETE: Delete a specific form template.
+#**********************************************************
 @router.delete("/{form_template_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_form_template(study_id: int, form_template_id: int, db: Session = Depends(get_db)):
     ft = db.get(FormTemplate, form_template_id)
@@ -158,9 +164,8 @@ def delete_form_template(study_id: int, form_template_id: int, db: Session = Dep
     return None
 
 
-# bu put endpoint, belirli bir çalışmaya (study) ait bir form şablonunu (form template) güncellemek için kullanılır.
-# mevcut alanları (form fields) siler ve payload'taki yeni alanlarla değiştir
-
+# PUT: Update a specific form template for a specific study.
+#**********************************************************
 @router.put("/{form_template_id}", response_model=FormTemplateDetailOut)
 def update_form_template(
     study_id: int, form_template_id: int, payload: FormTemplateUpdate, db: Session = Depends(get_db)

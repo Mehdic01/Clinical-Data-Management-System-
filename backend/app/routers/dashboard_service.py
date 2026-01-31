@@ -8,6 +8,8 @@ from app.models.scheduled_visit import ScheduledVisit, ScheduledVisitStatus
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
+# Database oturumu (session) sağlayan bağımlılık (dependency) enjeksiyonu fonksiyonu
+#****************************************************************************************
 
 def get_db():
 	db = SessionLocal()
@@ -17,8 +19,8 @@ def get_db():
 		db.close()
 
 
-# GET: Dashboard ozet sayimlarini dondurur.
-#*********************************************************************************************************************
+# This endpoint provides a summary of the dashboard page, including active studies, draft studies, scheduled visits, and completed visits.
+#**********************************************************
 @router.get("/summary")
 def get_dashboard_summary(db: Session = Depends(get_db)):
 	active_studies = db.execute(

@@ -20,9 +20,8 @@ def get_db():
         db.close()
 
 
-# POST: Subject icin visit template'lere gore scheduled visit olusturur.
-# "schedule_generated" flag'ini gunceller. ve o ilgili subjectin scheduled visit'lerini dondurur.
-#*********************************************************************************************************************
+# POST: Generate scheduled visits for a subject based on visit templates.
+#**********************************************************
 @router.post(
     "/subjects/{subject_id}/scheduled-visits",
     response_model=list[ScheduledVisitOut],

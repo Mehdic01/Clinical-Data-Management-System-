@@ -1,4 +1,7 @@
-# Import models here so Alembic can discover them via env.py imports if needed.
+# __init__.py dosyası, app.models paketindeki tüm modelleri içe aktarır.
+# Bu sayede, diğer modüller modelleri doğrudan app.models'dan içe aktarabilir. ve alembic gibi araçlar tüm modelleri bulabilir.
+#****************************************************************************************
+
 from app.models.study import Study
 from app.models.visit_template import VisitTemplate 
 from app.models.form_template import FormTemplate  # noqa: F401

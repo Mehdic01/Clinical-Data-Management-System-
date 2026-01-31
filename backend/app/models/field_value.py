@@ -1,8 +1,10 @@
 from sqlalchemy import ForeignKey, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
-
 from app.db.base import Base
 
+# FieldValue modeli, bir form girişi (FormEntry) için doldurulan alan değerlerini (field values) temsil eder.
+# Her alan değeri, belirli bir form alanına (FormField) aittir ve değeri (value) saklar.
+#****************************************************************************************
 
 class FieldValue(Base):
     __tablename__ = "field_values"

@@ -3,6 +3,9 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
 
+# FormTemplate modeli, bir çalışmaya (Study) ait form şablonlarını temsil eder.
+# Her formun benzersiz bir kodu (code) vardır.
+#****************************************************************************************
 
 class FormTemplate(Base):
     __tablename__ = "form_templates"

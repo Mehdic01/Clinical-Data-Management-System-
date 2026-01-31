@@ -35,7 +35,8 @@ def _get_visit_template_or_404(db: Session, study_id: int, visit_template_id: in
     return vt
 
 
-# GET: Belirli bir visit template'in detayını ve bağlı form template listesini döndürür.
+# GET: Retrieve details of a visit template and its associated form templates.
+#**********************************************************
 @router.get(
     "/studies/{study_id}/visit-templates/{visit_template_id}",
     response_model=VisitTemplateWithFormsOut,
@@ -82,7 +83,8 @@ def list_study_form_templates(study_id: int, db: Session = Depends(get_db)):
     ]
 
 
-# PUT: Bir visit template'e bağlı form template'leri topluca değiştirir (attach/detach).
+# PUT: Replace attached forms for a visit template.
+#**********************************************************
 @router.put(
     "/studies/{study_id}/visit-templates/{visit_template_id}/attached-forms",
     status_code=status.HTTP_204_NO_CONTENT,

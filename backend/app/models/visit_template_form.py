@@ -4,7 +4,8 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.db.base import Base
 
 # bu model, ziyaret şablonları (visit templates) ile form şablonları (form templates) arasındaki ilişkiyi temsil eder
-# join table olarak işlev görür
+# join table olarak işlev görür.
+#****************************************************************************************
 
 class VisitTemplateForm(Base):
     __tablename__ = "visit_template_forms"

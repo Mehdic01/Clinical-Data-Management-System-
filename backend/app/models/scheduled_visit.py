@@ -1,11 +1,12 @@
 from datetime import date
 import enum
-
 from sqlalchemy import Date, Enum as SAEnum, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
-
 from app.db.base import Base
 
+# ScheduledVisit modeli, bir denek (Subject) için planlanmış ziyaretleri (visits) temsil eder.
+# visit_template'e göre benzersizdir ve durumu (status) izler.
+# ****************************************************************************************
 
 class ScheduledVisitStatus(str, enum.Enum):
 	Pending = "Pending"
@@ -27,14 +28,14 @@ class ScheduledVisit(Base):
 	)
 
 	visit_template_id: Mapped[int] = mapped_column(
-		ForeignKey("visit_templates.id", ondelete="CASCADE"),
+		ForeignKey("visit_templates.id", ondelete="CASCADE"), # visit_template silindiğinde ilişkili scheduled_visit'ler de silinir.
 		nullable=False,
 		index=True,
 	)
 
-	scheduled_date: Mapped[date] = mapped_column(Date, nullable=False)
-	window_start: Mapped[date] = mapped_column(Date, nullable=False)
-	window_end: Mapped[date] = mapped_column(Date, nullable=False)
+	scheduled_date: Mapped[date] = mapped_column(Date, nullable=False) # planlanan ziyaret tarihi
+	window_start: Mapped[date] = mapped_column(Date, nullable=False) # tarih aralığı başlangıcı
+	window_end: Mapped[date] = mapped_column(Date, nullable=False) # tarih aralığı sonu
 	status: Mapped[ScheduledVisitStatus] = mapped_column(
 		SAEnum(ScheduledVisitStatus, native_enum=False),
 		nullable=False,

@@ -1,12 +1,13 @@
 import enum
 from datetime import datetime
-
 from sqlalchemy import DateTime, Enum as SAEnum, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
-
 from app.db.base import Base
 
+# FormEntry modeli, bir planlanmış ziyaret (ScheduledVisit) için doldurulan formları (forms) temsil eder.
+# Her form girişi, belirli bir form şablonuna (FormTemplate) aittir ve durumu (status) izler.
+#****************************************************************************************
 
 class FormEntryStatus(str, enum.Enum):
     Draft = "Draft"
