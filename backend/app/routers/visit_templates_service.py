@@ -18,7 +18,6 @@ def get_db():
     finally:
         db.close()
 
-
 # bu endpointler, belirli bir çalışmaya (study) ait ziyaret şablonlarını (visit templates) oluşturmak ve listelemek için kullanılır.
 
 # POST: Create a new visit template for a specific study.

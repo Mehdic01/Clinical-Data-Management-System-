@@ -4,7 +4,7 @@
 alembic revision --autogenerate -m "create studies" --> studies tablosunu oluşturur
 alembic upgrade head 
 
-Typical flow:
+Typical flow of migration:
 
 Create/modify SQLAlchemy models.
 Generate migration: alembic revision --autogenerate -m "message"

@@ -16,7 +16,6 @@ from app.schemas.visit_forms import (
 
 router = APIRouter(tags=["visit-template-forms"])
 
-
 def get_db():
     db = SessionLocal()
     try:

@@ -7,6 +7,7 @@ from app.db.base import Base
 # Subject modeli, bir çalışmaya (Study) ait denekleri (subjects) temsil eder.
 # Her deneğin çalışmaya göre benzersiz bir tanımlayıcısı (subject_identifier) ve kayıt tarihi (enrollment_date) vardır.
 #****************************************************************************************
+
 class Subject(Base):
 	__tablename__ = "subjects"
 	__table_args__ = (

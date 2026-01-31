@@ -16,6 +16,7 @@ def get_db():
     finally:
         db.close()
 
+
 # POST: Create a new study with input validation using Pydantic schemas.
 #**********************************************************
 @router.post("", response_model=StudyOut, status_code=status.HTTP_201_CREATED)

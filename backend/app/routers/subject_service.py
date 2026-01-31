@@ -19,7 +19,6 @@ def get_db():
 	finally:
 		db.close()
 
-
 # GET: List all subjects for a specific study.
 #**********************************************************
 @router.get("/studies/{study_id}/subjects", response_model=list[SubjectOut])

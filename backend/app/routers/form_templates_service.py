@@ -26,6 +26,7 @@ def get_db():
     finally:
         db.close()
 
+
 # POST: Create a new form template for a specific study, including its fields.
 #**********************************************************
 @router.post("", response_model=FormTemplateDetailOut, status_code=status.HTTP_201_CREATED)
