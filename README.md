@@ -461,5 +461,43 @@ If you ever want to run it manually (outside Docker), you can execute:
 cd backend
 python -m app.seed
 ```
+## Docker Operations and Service Overview
+
+This project runs via [docker-compose.yml](docker-compose.yml) with three core services and a seed process. Below is a professional summary of Docker operations and each service’s responsibilities.
+
+
+### Service Roles and Responsibilities
+
+#### Frontend (React + Vite)
+- **Service name:** `frontend`
+- **Purpose:** Serves the user interface and communicates with the backend via API.
+- **Port:** `5173` (host) → `5173` (container)
+- **Important note:** `VITE_API_BASE_URL` is set to `http://localhost:8000` for browser access.
+
+#### Backend (FastAPI + Uvicorn)
+- **Service name:** `backend`
+- **Purpose:** Exposes REST APIs, enforces business logic, and communicates with the DB through SQLAlchemy.
+- **Port:** `8000` (host) → `8000` (container)
+- **Startup step:** Automatically runs Alembic migrations inside the container, then starts Uvicorn.
+
+#### Database (PostgreSQL 16)
+- **Service name:** `db`
+- **Purpose:** Provides the persistent database layer for the application.
+- **Port:** `5432` (host) → `5432` (container)
+- **Data persistence:** Uses the `gqa_pgdata` volume to retain data across restarts.
+- **Healthcheck:** Backend and seed processes do not start until the DB is healthy.
+
+#### Seed (Data Seeding)
+- **Service name:** `seed`
+- **Purpose:** Creates initial demo data and required table structures.
+- **Behavior:** Runs once after the DB is healthy and the backend is started, then exits (no restart).
+
+### Dependency Flow (Summary)
+
+- `backend` starts only after `db` is healthy.
+- `seed` runs once after `backend` has started.
+- `frontend` performs API calls once `backend` is available.
+
+This setup is optimized for easy onboarding, environment consistency, and repeatable deployments.
 
 
