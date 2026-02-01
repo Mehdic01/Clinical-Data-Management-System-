@@ -26,7 +26,7 @@ A full-stack clinical data management platform designed to streamline the manage
 ```bash
 # 1. Clone the repository
 git clone https://github.com/Mehdic01/Clinical-Data-Management-System-.git
-cd gqa-assignment
+cd Clinical-Data-Management-System-
 
 # 2. (Optional) Configure backend environment
 # If you want to run locally without Docker, copy the backend env example:
