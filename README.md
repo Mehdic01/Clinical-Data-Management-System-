@@ -48,11 +48,8 @@ open--> http://localhost:5173
 - **Port conflicts:** If 5432/5173/8000 are busy, update [docker-compose.yml](docker-compose.yml) ports.
 - **Clean reset (optional):** `docker compose down -v` then `docker compose up --build` to rebuild and reseed.
 
-<<<<<<< HEAD
-=======
 > **Note:** Ensure Docker and Docker Compose are installed on your system before running the above commands.
 
->>>>>>> d9decb3684bf406b01908738d34bab3161d3c695
 ---
 
 ## Architecture
