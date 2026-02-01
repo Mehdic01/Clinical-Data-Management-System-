@@ -26,7 +26,7 @@ A full-stack clinical data management platform designed to streamline the manage
 ```bash
 # 1. Clone the repository
 git clone https://github.com/Mehdic01/Clinical-Data-Management-System-.git
-cd gqa-assignment
+cd Clinical-Data-Management-System-
 
 # 2. (Optional) Configure backend environment
 # If you want to run locally without Docker, copy the backend env example:
@@ -49,6 +49,11 @@ docker compose up --build
 - **Port conflicts:** If 5432/5173/8000 are busy, update [docker-compose.yml](docker-compose.yml) ports.
 - **Clean reset (optional):** `docker compose down -v` then `docker compose up --build` to rebuild and reseed.
 
+<<<<<<< HEAD
+=======
+> **Note:** Ensure Docker and Docker Compose are installed on your system before running the above commands.
+
+>>>>>>> d9decb3684bf406b01908738d34bab3161d3c695
 ---
 
 ## Architecture
