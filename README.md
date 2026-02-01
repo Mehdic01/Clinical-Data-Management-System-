@@ -37,8 +37,7 @@ cp backend/.env.example backend/.env
 docker compose up --build
 
 # 4. Open the app
-# Frontend: http://localhost:5173
-# Backend API: http://localhost:8000
+open--> http://localhost:5173
 ```
 
 > **Note:** Ensure Docker and Docker Compose are installed on your system before running the above commands.
