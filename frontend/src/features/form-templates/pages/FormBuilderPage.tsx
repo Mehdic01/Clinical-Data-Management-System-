@@ -1,3 +1,8 @@
+/**
+ * FormBuilderPage
+ * Yeni form şablonu oluşturma veya mevcut şablonu düzenleme ekranı.
+ * FormBuilder bileşenini bağlar ve başarılı kayıttan sonra yönlendirme yapar.
+ */
 import { useParams, useNavigate } from "react-router-dom";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { FormBuilder } from "../components/FormBuilder";

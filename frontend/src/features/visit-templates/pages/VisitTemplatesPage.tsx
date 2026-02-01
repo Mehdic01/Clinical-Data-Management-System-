@@ -1,3 +1,8 @@
+/**
+ * VisitTemplatesPage
+ * Çalışmaya ait ziyaret şablonlarını yönetme sayfası.
+ * Listeleme, oluşturma ve düzenleme akışlarını üst seviyede kontrol eder.
+ */
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";

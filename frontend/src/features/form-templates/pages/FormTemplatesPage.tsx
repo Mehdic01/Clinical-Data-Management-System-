@@ -1,3 +1,8 @@
+/**
+ * FormTemplatesPage
+ * Çalışmaya ait form şablonlarını listeleyen ana yönetim sayfası.
+ * Oluşturma, düzenleme ve silme işlemleri için üst seviye akışı sağlar.
+ */
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -102,7 +107,7 @@ export function FormTemplatesPage() {
       />
 
       {/* Create Dialog */}
-      <Dialog open={showCreateDialog} onClose={() => setShowCreateDialog(false)}>
+      <Dialog open={showCreateDialog} onClose={() => setShowCreateDialog(false)} size="full">
         <DialogHeader>
           <DialogTitle>Create Form Template</DialogTitle>
         </DialogHeader>
@@ -125,7 +130,7 @@ export function FormTemplatesPage() {
       </Dialog>
 
       {/* Edit Dialog */}
-      <Dialog open={!!editingTemplateId} onClose={() => setEditingTemplateId(null)}>
+      <Dialog open={!!editingTemplateId} onClose={() => setEditingTemplateId(null)} size="full">
         <DialogHeader>
           <DialogTitle>Edit Form Template</DialogTitle>
         </DialogHeader>

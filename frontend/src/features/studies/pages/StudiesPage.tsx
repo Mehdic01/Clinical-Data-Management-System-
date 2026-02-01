@@ -1,3 +1,8 @@
+/**
+ * StudiesPage
+ * Tüm çalışmaları listeleyen ve yeni çalışma oluşturmayı sağlayan sayfa.
+ * Listeleme, boş durum, hata ve oluşturma diyaloglarını yönetir.
+ */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageContainer } from "@/components/layout/PageContainer";

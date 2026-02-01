@@ -1,3 +1,8 @@
+/**
+ * StudyDetailPage
+ * Seçilen çalışmanın detaylarını ve alt modül sekmelerini gösterir.
+ * Çalışma bilgisini çeker, sekme yönlendirmelerini ve erişim akışını yönetir.
+ */
 import { useParams, NavLink, Outlet, useLocation, Navigate } from "react-router-dom";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";

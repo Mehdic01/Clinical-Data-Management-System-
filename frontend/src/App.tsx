@@ -12,6 +12,8 @@ const queryClient = new QueryClient({
   },
 });
 
+// Uygulamanın ana bileşeni, React Query ve Router sağlayıcılarını sarar. Router'a gittikten sonra sayfa bileşenleri yüklenir.
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>

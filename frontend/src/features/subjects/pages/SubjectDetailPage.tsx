@@ -1,3 +1,8 @@
+/**
+ * SubjectDetailPage
+ * Subject detaylarını, planlanmış ziyaretleri ve formları görüntüleyen sayfa.
+ * Ziyaret planı oluşturma ve form doldurma/görüntüleme akışlarını yönetir.
+ */
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -205,6 +210,7 @@ function FillFormDialog({
   form: ScheduledVisitForm;
 }) {
   const [formValues, setFormValues] = useState<Record<number, string>>({});
+  const [fieldErrors, setFieldErrors] = useState<Record<number, string>>({});
 
   const { data: formTemplate, isLoading: templateLoading } = useFormTemplate(
     studyId,
@@ -213,8 +219,56 @@ function FillFormDialog({
 
   const createMutation = useCreateFormEntry(scheduledVisitId);
 
+  const getFieldError = (
+    field: { id: number; required: boolean; type: string },
+    value: string
+  ) => {
+    const trimmed = value.trim();
+
+    if (field.required && !trimmed) {
+      return "This field is required.";
+    }
+
+    if (!trimmed) return "";
+
+    if (field.type === "Number") {
+      const numeric = Number(trimmed);
+      if (!Number.isFinite(numeric)) {
+        return "Enter a valid number.";
+      }
+    }
+
+    if (field.type === "Date") {
+      if (Number.isNaN(Date.parse(trimmed))) {
+        return "Enter a valid date.";
+      }
+    }
+
+    if (field.type === "Text") {
+      if (/^\d+(\.\d+)?$/.test(trimmed)) {
+        return "Enter a valid text.";
+      }
+    }
+
+    return "";
+  };
+
   const handleSubmit = async () => {
     if (!formTemplate) return;
+
+    const nextErrors: Record<number, string> = {};
+    formTemplate.fields?.forEach((field) => {
+      const value = formValues[field.id] || "";
+      const error = getFieldError(field, value);
+      if (error) {
+        nextErrors[field.id] = error;
+      }
+    });
+
+    if (Object.keys(nextErrors).length > 0) {
+      setFieldErrors(nextErrors);
+      return;
+    }
 
     const fieldValues: FieldValueInput[] = formTemplate.fields?.map((field) => ({
       fieldId: field.id,
@@ -229,8 +283,20 @@ function FillFormDialog({
     onClose();
   };
 
-  const handleFieldChange = (fieldId: number, value: string) => {
-    setFormValues((prev) => ({ ...prev, [fieldId]: value }));
+  const handleFieldChange = (
+    field: { id: number; required: boolean; type: string },
+    value: string
+  ) => {
+    setFormValues((prev) => ({ ...prev, [field.id]: value }));
+    const error = getFieldError(field, value);
+    setFieldErrors((prev) => {
+      if (!error && !prev[field.id]) return prev;
+      if (!error) {
+        const { [field.id]: _, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [field.id]: error };
+    });
   };
 
   const sortedFields = formTemplate?.fields
@@ -258,11 +324,18 @@ function FillFormDialog({
                 </label>
                 <input
                   type={field.type === "Number" ? "number" : field.type === "Date" ? "date" : "text"}
-                  className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 ${
+                    fieldErrors[field.id]
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                      : "border-zinc-300 focus:border-blue-500 focus:ring-blue-500"
+                  }`}
                   value={formValues[field.id] || ""}
-                  onChange={(e) => handleFieldChange(field.id, e.target.value)}
+                  onChange={(e) => handleFieldChange(field, e.target.value)}
                   required={field.required}
                 />
+                {fieldErrors[field.id] && (
+                  <p className="text-xs text-red-600">{fieldErrors[field.id]}</p>
+                )}
               </div>
             ))}
           </div>

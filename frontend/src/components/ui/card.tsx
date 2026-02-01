@@ -1,13 +1,43 @@
 import type { ReactNode, HTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
+
+type CardVariant = "default" | "elevated" | "outlined" | "ghost";
 
 type CardProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
+  variant?: CardVariant;
+  interactive?: boolean;
   className?: string;
 };
 
-export function Card({ children, className = "", ...props }: CardProps) {
+const variantStyles: Record<CardVariant, string> = {
+  default: "bg-white border border-neutral-200/80 shadow-card",
+  elevated: "bg-white shadow-elevated border-0",
+  outlined: "bg-white border-2 border-neutral-200 shadow-none",
+  ghost: "bg-neutral-50/50 border-0 shadow-none",
+};
+
+export function Card({ 
+  children, 
+  variant = "default",
+  interactive = false,
+  className, 
+  ...props 
+}: CardProps) {
   return (
-    <div className={`rounded-lg border border-zinc-200 bg-white ${className}`} {...props}>
+    <div 
+      className={cn(
+        "rounded-xl transition-all duration-200",
+        variantStyles[variant],
+        interactive && [
+          "cursor-pointer",
+          "hover:shadow-card-hover hover:border-neutral-300",
+          "active:scale-[0.99]",
+        ],
+        className
+      )} 
+      {...props}
+    >
       {children}
     </div>
   );
@@ -15,13 +45,21 @@ export function Card({ children, className = "", ...props }: CardProps) {
 
 export function CardHeader({
   children,
-  className = "",
+  className,
+  noBorder = false,
 }: {
   children: ReactNode;
   className?: string;
+  noBorder?: boolean;
 }) {
   return (
-    <div className={`border-b border-zinc-200 px-6 py-4 ${className}`}>
+    <div 
+      className={cn(
+        "px-6 py-4",
+        !noBorder && "border-b border-neutral-100",
+        className
+      )}
+    >
       {children}
     </div>
   );
@@ -29,23 +67,37 @@ export function CardHeader({
 
 export function CardContent({
   children,
-  className = "",
+  className,
+  compact = false,
 }: {
   children: ReactNode;
   className?: string;
+  compact?: boolean;
 }) {
-  return <div className={`px-6 py-4 ${className}`}>{children}</div>;
+  return (
+    <div className={cn(
+      compact ? "px-4 py-3" : "px-6 py-5",
+      className
+    )}>
+      {children}
+    </div>
+  );
 }
 
 export function CardFooter({
   children,
-  className = "",
+  className,
 }: {
   children: ReactNode;
   className?: string;
 }) {
   return (
-    <div className={`border-t border-zinc-200 px-6 py-4 ${className}`}>
+    <div 
+      className={cn(
+        "border-t border-neutral-100 px-6 py-4 bg-neutral-50/50",
+        className
+      )}
+    >
       {children}
     </div>
   );
@@ -53,20 +105,35 @@ export function CardFooter({
 
 export function CardTitle({
   children,
-  className = "",
+  className,
+  as: Component = "h3",
 }: {
   children: ReactNode;
   className?: string;
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }) {
-  return <h3 className={`text-lg font-semibold ${className}`}>{children}</h3>;
+  return (
+    <Component 
+      className={cn(
+        "text-lg font-semibold text-neutral-900 tracking-tight",
+        className
+      )}
+    >
+      {children}
+    </Component>
+  );
 }
 
 export function CardDescription({
   children,
-  className = "",
+  className,
 }: {
   children: ReactNode;
   className?: string;
 }) {
-  return <p className={`text-sm text-zinc-500 ${className}`}>{children}</p>;
+  return (
+    <p className={cn("mt-1 text-sm text-neutral-500", className)}>
+      {children}
+    </p>
+  );
 }

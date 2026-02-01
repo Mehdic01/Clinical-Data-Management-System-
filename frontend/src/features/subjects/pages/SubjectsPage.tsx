@@ -1,3 +1,8 @@
+/**
+ * SubjectsPage
+ * Çalışmaya ait subject listesini gösterir ve subject oluşturma akışını yönetir.
+ * Aktivasyon uyarısı, oluşturma/silme diyalogları ve liste durumlarını ele alır.
+ */
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -223,7 +228,12 @@ export function SubjectsPage() {
           <p className="mt-1 text-sm text-zinc-500">
             Add your first subject to get started
           </p>
-          <Button className="mt-4" onClick={() => setShowCreateDialog(true)}>
+          <Button
+            className="mt-4"
+            onClick={() => setShowCreateDialog(true)}
+            disabled={!isStudyActive}
+            title={!isStudyActive ? "Activate study first" : undefined}
+          >
             Add Subject
           </Button>
         </div>

@@ -3,26 +3,42 @@
 
 A full-stack clinical data management platform designed to streamline the management of clinical trial data. The system provides dashboards, real-time analytics, and a robust backend API for managing studies, subjects, and visits.
 
+### Screenshots
+
+<p align="center">
+    <img src="./assets/ss1.png" width="240" alt="Screenshot 1" />
+    <img src="./assets/ss2.png" width="240" alt="Screenshot 2" />
+    <img src="./assets/ss3.png" width="240" alt="Screenshot 3" />
+</p>
+<p align="center">
+    <img src="./assets/ss4.png" width="240" alt="Screenshot 4" />
+    <img src="./assets/ss5.png" width="240" alt="Screenshot 5" />
+    <img src="./assets/ss6.png" width="240" alt="Screenshot 6" />
+</p>
+<p align="center">
+    <img src="./assets/ss7.png" width="240" alt="Screenshot 7" />
+</p>
+
 ---
 
-## how to run the project
+## Quick Start
 
 ```bash
 # 1. Clone the repository
-git clone <repository-url>
+git clone https://github.com/Mehdic01/Clinical-Data-Management-System-.git
 cd gqa-assignment
 
-# 2. Configure environment
-cp .env.example .env
-# Edit .env to set up database credentials and other configurations
+# 2. (Optional) Configure backend environment
+# If you want to run locally without Docker, copy the backend env example:
+cp backend/.env.example backend/.env
 
 # 3. Start the project using Docker
 # Build and start the containers
-docker-compose up --build
+docker compose up --build
 
 # 4. Open the app
 # Frontend: http://localhost:5173
-# Backend API: http://localhost:8000/docs
+# Backend API: http://localhost:8000
 ```
 
 > **Note:** Ensure Docker and Docker Compose are installed on your system before running the above commands.
@@ -91,20 +107,302 @@ graph TB
 
 Below is the ER diagram representing the data model for this project:
 
-![ER Diagram](./assets/er-diagram.png)
+![ER Diagram](./assets/erd_diagram.png)
 
 ---
 
-## Environment Variables
+### Project Files Structure
 
-| Variable           | Description                | Default         |
-|--------------------|----------------------------|-----------------|
-| `DATABASE_URL`     | PostgreSQL connection URL  | `postgresql://` |
-| `PGPORT`           | PostgreSQL port            | `5432`          |
-| `POSTGRES_USER`    | Database username          | `user`          |
-| `POSTGRES_PASSWORD`| Database password          | `password`      |
-| `POSTGRES_DB`      | Database name              | `gqa_db`        |
-| `API_PORT`         | Backend API port           | `8000`          |
+#### Backend (FastAPI)
+
+```
+backend/
+├── app/                              # FastAPI application package
+│   ├── main.py                       # App entrypoint, middleware, router registration
+│   ├── core/                         # Configuration layer
+│   │   └── config.py                 # Pydantic settings (.env)
+│   ├── db/                           # Database session & base
+│   │   ├── base.py                   # SQLAlchemy Base
+│   │   └── session.py                # Engine + SessionLocal + get_db()
+│   ├── models/                       # SQLAlchemy ORM models
+│   │   ├── study.py
+│   │   ├── subject.py
+│   │   ├── visit_template.py
+│   │   ├── form_template.py
+│   │   ├── form_field.py
+│   │   ├── visit_template_form.py
+│   │   ├── scheduled_visit.py
+│   │   ├── form_entry.py
+│   │   └── field_value.py
+│   ├── schemas/                      # Pydantic schemas (request/response)
+│   │   ├── study.py
+│   │   ├── subject.py
+│   │   ├── visit_template.py
+│   │   ├── form_templates.py
+│   │   ├── visit_forms.py
+│   │   └── form_entry.py
+│   ├── routers/                      # API route modules by domain
+│   │   ├── health.py
+│   │   ├── studies_service.py
+│   │   ├── visit_templates_service.py
+│   │   ├── form_templates_service.py
+│   │   ├── visit_forms_service.py
+│   │   ├── scheduled_visit_service.py
+│   │   ├── form_entry_service.py
+│   │   ├── subject_service.py
+│   │   └── dashboard_service.py
+│   ├── seed.py                        # Seed script for initial data
+│   └── tests/                          # Pytest suite
+│       ├── conftest.py
+│       ├── test_health.py
+│       └── test_crud.py
+├── alembic/                           # Alembic migrations
+│   ├── env.py
+│   └── versions/                      # Migration files
+├── alembic.ini                         # Alembic config
+├── requirements.txt                    # Python dependencies
+├── pytest.ini                          # Pytest configuration
+└── Dockerfile                          # Backend Dockerfile
+```
+
+#### Frontend (React + Vite)
+
+This project uses a **feature-first architecture**. Each domain area (studies, subjects, visit-templates, etc.) lives in its own folder alongside its pages, components, and hooks. This approach keeps the codebase modular, enables parallel development, and makes feature-level maintenance and scaling easier.
+
+```
+frontend/
+├── src/
+│   ├── assets/                   # Static assets and icons
+│   ├── api/                      # API layer
+│   │   ├── axios.ts              # Axios instance & interceptors
+│   │   ├── endpoints.ts          # API endpoint constants
+│   │   └── services/
+│   │       ├── study.service.ts
+│   │       ├── visit-template.service.ts
+│   │       ├── form-template.service.ts
+│   │       ├── subject.service.ts
+│   │       ├── scheduled-visit.service.ts
+│   │       └── form-entry.service.ts
+│   │
+│   ├── components/               # Reusable components
+│   │   ├── ui/                   # Base UI components (shadcn)
+│   │   │   ├── button.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── table.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── dialog.tsx
+│   │   │   ├── badge.tsx
+│   │   │   └── ...
+│   │   │
+│   │   ├── layout/               # Layout components
+│   │   │   ├── MainLayout.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── Header.tsx
+│   │   │   └── PageContainer.tsx
+│   │   │
+│   │   └── shared/               # Shared business components
+│   │       ├── LoadingSpinner.tsx
+│   │       ├── ErrorMessage.tsx
+│   │       ├── EmptyState.tsx
+│   │       ├── ConfirmDialog.tsx
+│   │       ├── DataTable.tsx
+│   │       └── StatusBadge.tsx
+│   │
+│   ├── features/                 # Feature-based modules
+│   │   ├── dashboard/
+│   │   │   ├── components/
+│   │   │   ├── hooks/
+│   │   │   └── pages/
+│   │   ├── studies/
+│   │   │   ├── components/
+│   │   │   │   ├── StudyList.tsx
+│   │   │   │   ├── StudyCard.tsx
+│   │   │   │   ├── StudyForm.tsx
+│   │   │   │   └── StudyStatusBadge.tsx
+│   │   │   ├── hooks/
+│   │   │   │   └── useStudies.ts
+│   │   │   ├── pages/
+│   │   │   │   ├── StudiesPage.tsx
+│   │   │   │   └── StudyDetailPage.tsx
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── visit-templates/
+│   │   │   ├── components/
+│   │   │   │   ├── VisitTemplateList.tsx
+│   │   │   │   ├── VisitTemplateForm.tsx
+│   │   │   │   └── VisitWindowBadge.tsx
+│   │   │   ├── hooks/
+│   │   │   │   └── useVisitTemplates.ts
+│   │   │   └── pages/
+│   │   │       └── VisitTemplatesPage.tsx
+│   │   │
+│   │   ├── form-templates/
+│   │   │   ├── components/
+│   │   │   │   ├── FormTemplateList.tsx
+│   │   │   │   ├── FormBuilder.tsx
+│   │   │   │   ├── FieldEditor.tsx
+│   │   │   │   └── FieldTypeSelect.tsx
+│   │   │   ├── hooks/
+│   │   │   │   └── useFormTemplates.ts
+│   │   │   └── pages/
+│   │   │       ├── FormTemplatesPage.tsx
+│   │   │       └── FormBuilderPage.tsx
+│   │   │
+│   │   ├── subjects/
+│   │   │   ├── components/
+│   │   │   │   ├── SubjectList.tsx
+│   │   │   │   ├── SubjectForm.tsx
+│   │   │   │   └── SubjectSchedule.tsx
+│   │   │   ├── hooks/
+│   │   │   │   └── useSubjects.ts
+│   │   │   └── pages/
+│   │   │       ├── SubjectsPage.tsx
+│   │   │       └── SubjectDetailPage.tsx
+│   │   │
+│   │   └── form-entry/
+│   │       ├── components/
+│   │       │   ├── DynamicForm.tsx
+│   │       │   ├── FieldRenderer.tsx
+│   │       │   ├── FormEntryView.tsx
+│   │       │   └── ScheduledVisitCard.tsx
+│   │       ├── hooks/
+│   │       │   └── useFormEntry.ts
+│   │       └── pages/
+│   │           └── FormEntryPage.tsx
+│   │
+│   ├── hooks/                    # Global custom hooks
+│   │   ├── useDebounce.ts
+│   │   ├── useLocalStorage.ts
+│   │   └── useMediaQuery.ts
+│   │
+│   ├── lib/                      # Utilities & helpers
+│   │   ├── utils.ts              # General utilities (cn, formatDate, etc.)
+│   │   ├── validation.ts         # Zod schemas
+│   │   └── constants.ts          # App-wide constants
+│   │
+│   ├── routes/                   # Routing configuration
+│   │   ├── index.tsx             # Route definitions
+│   │   └── ProtectedRoute.tsx    # Route guards (if needed)
+│   │
+│   ├── stores/                   # Zustand stores (client state)
+│   │   ├── ui.store.ts           # UI state (sidebar, modals)
+│   │   └── app.store.ts          # App-wide state
+│   │
+│   ├── types/                    # TypeScript types/interfaces
+│   │   ├── study.types.ts
+│   │   ├── visit-template.types.ts
+│   │   ├── form-template.types.ts
+│   │   ├── subject.types.ts
+│   │   ├── scheduled-visit.types.ts
+│   │   ├── form-entry.types.ts
+│   │   └── api.types.ts          # Generic API response types
+│   │
+│   ├── App.tsx                   # App entry point
+│   ├── main.tsx                  # Vite entry
+│   └── index.css                 # Global styles (Tailwind)
+```
+
+---
+
+## API Reference
+
+All endpoints are defined under backend routers.
+
+### Health
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/health` | Health check |
+
+### Studies
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/studies` | Create a new study |
+| GET | `/studies` | List all studies |
+| GET | `/studies/{study_id}` | Get a study by ID |
+| PUT | `/studies/{study_id}/activate` | Activate a study |
+
+### Visit Templates
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/studies/{study_id}/visit-templates` | Create a visit template |
+| GET | `/studies/{study_id}/visit-templates` | List visit templates for a study |
+| PUT | `/studies/{study_id}/visit-templates/{visit_template_id}` | Update a visit template |
+| DELETE | `/studies/{study_id}/visit-templates/{visit_template_id}` | Delete a visit template |
+
+### Form Templates
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/studies/{study_id}/form-templates` | Create a form template (with fields) |
+| GET | `/studies/{study_id}/form-templates` | List form templates for a study |
+| GET | `/studies/{study_id}/form-templates/{form_template_id}` | Get a form template detail |
+| GET | `/studies/{study_id}/form-templates/{form_template_id}/field-count` | Get field count for a form template |
+| PUT | `/studies/{study_id}/form-templates/{form_template_id}` | Update a form template |
+| DELETE | `/studies/{study_id}/form-templates/{form_template_id}` | Delete a form template |
+| POST | `/studies/{study_id}/form-templates/{form_template_id}/fields` | Add a field to a form template |
+
+### Visit Template Forms
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/studies/{study_id}/visit-templates/{visit_template_id}` | Get visit template with attached forms |
+| GET | `/studies/{study_id}/form-templates` | List form templates for a study (attach forms) |
+| PUT | `/studies/{study_id}/visit-templates/{visit_template_id}/attached-forms` | Replace attached forms for a visit template |
+
+### Subjects
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/studies/{study_id}/subjects` | List subjects for a study |
+| POST | `/studies/{study_id}/subjects` | Create a subject |
+| GET | `/subjects/{subject_id}` | Get subject detail (with scheduled visits) |
+| DELETE | `/subjects/{subject_id}` | Delete a subject |
+
+### Scheduled Visits
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/subjects/{subject_id}/scheduled-visits` | Generate scheduled visits for a subject |
+
+### Form Entries
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/scheduled-visits/{scheduled_visit_id}/forms` | List forms for a scheduled visit |
+| GET | `/form-entries/{form_entry_id}` | Get form entry detail |
+| POST | `/scheduled-visits/{scheduled_visit_id}/form-entries` | Create a form entry |
+
+### Dashboard
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/dashboard/summary` | Dashboard summary metrics |
+
+---
+
+## Trade-offs and Possible Improvements
+
+### Trade-offs
+- **Monolith API vs. service split:** The backend is a single FastAPI app for simplicity, which keeps deployment easy but limits independent scaling of modules.
+- **Sync SQLAlchemy sessions:** Synchronous ORM keeps code straightforward, but async DB access could improve throughput under high load.
+- **Minimal RBAC:** Permissions are kept simple for the assignment scope; more granular role-based policies would increase complexity.
+- **Single DB instance:** A single PostgreSQL instance simplifies operations but can be a bottleneck for very large datasets.
+
+### Possible Improvements
+- **Async DB layer:** Migrate to SQLAlchemy async + async driver for better concurrency.
+- **Authentication/RBAC:** Add JWT auth with refresh tokens and fine‑grained permissions if needed.
+- **Observability:** Add structured logging, request tracing, and metrics (e.g., OpenTelemetry + Prometheus).
+- **Caching:** Add Redis for hot endpoints such as dashboard summary.
+- **CI/CD:** Add automated linting, tests, and Docker image builds in CI.
+- **E2E tests:** Add frontend E2E coverage (Playwright/Cypress) for critical flows.
+- **API docs:** Publish OpenAPI docs and examples per endpoint for easier onboarding.
+
+---
+
+## Tech Stack:
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19, Vite, TypeScript, Tailwind CSS 4, TanStack Query (React Query), React Router v6, React Hook Form + Zod, Zustand, Axios |
+| Backend | FastAPI, Python 3.12, SQLAlchemy 2.0, Alembic, Pydantic v2, psycopg |
+| Database | PostgreSQL 16|
+| Deployment | Docker Compose (3 services)|
+| Testing | pytest (31 tests), pytest-asyncio, httpx|
 
 ---
 
@@ -127,40 +425,34 @@ npm install
 npm run dev
 ```
 
-### Run Tests
+## Testing
 
-#### Backend Tests
+#### Backend (pytest) — 31 tests
+
 ```bash
 cd backend
-pytest
+pytest -v
 ```
 
-#### Frontend Tests
+| Module | Tests | Coverage |
+|--------|-------|----------|
+| `test_health.py` | 5 | Health check, DB connectivity, tables, FKs |
+| `test_crud.py` | 26 | CRUD endpoints for studies, visits, forms, subjects |
+
+---
+
+## Seed Data
+
+This project includes a seed script at [backend/app/seed.py](backend/app/seed.py) to populate initial demo data for testing.
+
+- **Docker behavior:** When you run `docker compose up --build`, the `seed` service executes automatically after the database is healthy and the backend is started. It runs Alembic migrations and then seeds the database.
+- **Idempotent:** The seed script checks if the data already exists and skips re-inserting to avoid duplicates.
+
+If you ever want to run it manually (outside Docker), you can execute:
+
 ```bash
-cd frontend
-npm run test
+cd backend
+python -m app.seed
 ```
 
----
 
-## Project Structure
-
-```
-gqa-assignment/
-├── backend/                # Backend service
-│   ├── app/                # FastAPI application
-│   ├── alembic/            # Database migrations
-│   ├── requirements.txt    # Python dependencies
-│   └── Dockerfile          # Backend Dockerfile
-├── frontend/               # Frontend service
-│   ├── src/                # React application source
-│   ├── package.json        # Frontend dependencies
-│   └── Dockerfile          # Frontend Dockerfile
-└── docker-compose.yml      # Multi-service orchestration
-```
-
----
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.

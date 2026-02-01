@@ -92,7 +92,7 @@ export function FormBuilder({
           </Button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-2">
           {fields.map((field, index) => (
             <Card key={field.id}>
               <CardContent className="pt-4">

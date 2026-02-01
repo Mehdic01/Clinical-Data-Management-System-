@@ -1,5 +1,5 @@
 // Shared component barrel export
-export { LoadingSpinner } from "./LoadingSpinner";
+export { LoadingSpinner, PageLoader, Skeleton } from "./LoadingSpinner";
 export { ErrorMessage } from "./ErrorMessage";
 export { EmptyState } from "./EmptyState";
 export { ConfirmDialog } from "./ConfirmDialog";
