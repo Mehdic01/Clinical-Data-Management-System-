@@ -43,6 +43,12 @@ docker compose up --build
 
 > **Note:** Ensure Docker and Docker Compose are installed on your system before running the above commands.
 
+### Quick Start Notes (Helpful)
+
+- **Windows PowerShell:** use `copy backend\.env.example backend\.env` instead of `cp` if you run locally without Docker.
+- **Port conflicts:** If 5432/5173/8000 are busy, update [docker-compose.yml](docker-compose.yml) ports.
+- **Clean reset (optional):** `docker compose down -v` then `docker compose up --build` to rebuild and reseed.
+
 ---
 
 ## Architecture
